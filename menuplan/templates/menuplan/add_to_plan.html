@@ -1,0 +1,27 @@
+{% extends 'menuplan/base.html' %}
+{% block title %} {{ page_title }} {% endblock %}
+
+{% block content %}
+    <div>
+        <a href="{% url 'recipe_list' %}" class="btn-back">Вернуться в каталог</a>
+    </div>
+    <h1>{{ page_title }}</h1>
+    <article>
+        <div>
+        {% if recipe.cover %}
+            <img src="{{ recipe.cover.url }}">
+        {% else %}
+            <div>🍽️</div>
+        {% endif %}
+            <div>
+                <h2>{{ recipe.name }}</h2>
+                <p>Время приготовления: {{ recipe.cooking_time }}</p>
+            </div>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div>{{ form }}</div>
+            <button type="submit">Добавить в план питания</button>
+        </form>
+    </article>
+{% endblock %}

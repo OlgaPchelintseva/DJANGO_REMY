@@ -1,0 +1,49 @@
+{% extends 'menuplan/base.html' %}
+{% block title %} {{ page_title }} {% endblock %}
+
+{% block content %}
+    <h1>{{ page_title }}</h1>
+    <article>
+        <form method="post" class="shopping-list-form">
+            {% csrf_token %}
+            <div>{{form}}</div>
+            <button type="submit">Сформировать список</button>
+        </form>
+        {% if start_date and end_date %}
+            <h2>Список покупок на период с {{ start_date|date:"d.m.Y" }} по {{ end_date|date:"d.m.Y" }}</h2>
+        {% endif %}
+        {% if items %}
+            <table class="shopping-list-table">
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Продукт</th>
+                        <th>Количество</th>
+                        <th>Ед. изм.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ item.product_name__name }}</td>
+                            <td>{{ item.total_quantity }}</td>
+                            <td>
+                                {% if item.product_name__measure == 'grams' %}гр.
+                                {% elif item.product_name__measure == 'milliliters' %}мл.
+                                {% elif item.product_name__measure == 'things' %}шт.
+                                {% else %}{{ item.product_name__measure }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="shopping-list-empty">
+                <p>Список покупок пуст.</p>
+                <p>Выберите период и нажмите «Сформировать список».</p>
+            </div>
+        {% endif %}
+    </article>
+{% endblock %}

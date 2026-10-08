@@ -1,0 +1,21 @@
+{% extends 'menuplan/base.html' %}
+{% block title %} Вход {% endblock %}
+
+{% block content %} 
+    <h1 class="login-regisrer-title">Вход</h1>
+    <form method="post" class="login-regisrer-form">
+        {% csrf_token %}
+        <div>
+            <label>Имя пользователя</label>
+            {{ form.username }}
+        </div>
+        <div>
+            <label>Пароль</label>
+            {{ form.password }}
+        </div>
+        <button type="submit">Войти</button>
+        <p>Нет аккаунта? 
+            <a href="{% url 'register' %}">Зарегистрироваться</a>
+        </p>
+    </form>
+{% endblock %}

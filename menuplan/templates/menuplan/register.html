@@ -1,0 +1,14 @@
+{% extends 'menuplan/base.html' %}
+{% block title %} {{ page_title }} {% endblock %}
+
+{% block content %}
+    <h1 class="login-regisrer-title">Регистрация</h1>
+    <form method="post" class="login-regisrer-form">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit" >Зарегистрироваться</button>
+        <p>Уже есть аккаунт? 
+            <a href="{% url 'login' %}">Войти</a>
+        </p>
+    </form>
+{% endblock %}

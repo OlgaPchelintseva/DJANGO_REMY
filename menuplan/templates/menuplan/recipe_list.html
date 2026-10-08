@@ -1,0 +1,31 @@
+{% extends 'menuplan/base.html' %}
+{% block title %} {{ page_title }} {% endblock %}
+
+{% block content %}
+    <h1>Каталог рецептов</h1>
+    {% if recipes %}
+        {% for recipe in recipes %}
+            <article>
+                <div>
+                    {% if recipe.cover %}
+                        <img src="{{ recipe.cover.url }}">
+                    {% else %}
+                        <div>🍽️</div>
+                    {% endif %}
+                        <div>
+                            <h2>{{ recipe.name }}</h2>
+                            <p>Время приготовления: {{ recipe.cooking_time }}</p>
+                        </div>
+                </div>
+                <nav>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'add_to_plan' recipe.id %}">Добавить в план питания</a>
+                    {% endif %}
+                    <a href="{% url 'recipe_detail' recipe.id %}">Подробнее</a>
+                </nav>
+            </article>
+        {% endfor %}
+    {% else %}
+            <div>Каталог рецептов пуст</div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'menuplan/base.html' %}
+{% block title %} {{ page_title }} {% endblock %}
+
+{% block content %}
+    <h1>Мой план питания</h1>
+
+    {% if meal_plans %}
+        <div class="my-meal-plan-container">
+            {% regroup meal_plans by meal_date as date_list %}
+
+            {% for date_group in date_list %}
+                <article>
+                    <div>
+                        <h2>{{ date_group.grouper|date:"d.m.Y" }}</h2>
+                    </div>
+                    {% regroup date_group.list by meal_type as type_list %}
+                    <div class="my-meal-plan-card">
+                        {% for type_group in type_list %}
+                            <div>
+                                <hr>
+                                <h3>
+                                    {% if type_group.grouper == 'Breakfast' %}
+                                        Завтрак
+                                    {% elif type_group.grouper == 'Lunch' %}
+                                        Обед
+                                    {% elif type_group.grouper == 'Dinner' %}
+                                        Ужин
+                                    {% else %}
+                                        {{ type_group.grouper }}
+                                    {% endif %}
+                                </h3>
+                                <div>
+                                    {% for plan in type_group.list %}
+                                        <div class="my-meal-plan-card-detail">
+                                            <a href="{% url 'recipe_detail' plan.recipe.id %}">{{ plan.recipe.name }}</a>
+                                            <a href="{% url 'remove_from_plan' plan.id %}" onclick="return confirm('Удалить это блюдо из плана питания?')">✕</a>
+                                        </div>
+                                    {% endfor %}
+                                    <!-- <hr> -->
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <article>
+            <p>Ваш план питания пока пуст.</p>
+            <p>Перейдите в <a href="{% url 'recipe_list' %}">каталог рецептов</a>, чтобы добавить блюда.</p>
+        </article>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'menuplan/base.html' %}
+{% block title %} {{ page_title }} {% endblock %}
+
+{% block content %}
+    <div>
+        <a href="{% url 'recipe_list' %}" class="btn-back">Вернуться в каталог</a>
+    </div>
+    <article class="detail-card">
+        <div class="detail-card-header">
+            <h1>{{ recipe.name }}</h1>
+            <p>Время приготовления: {{ recipe.cooking_time }}</p>
+        </div>
+        <div class="detail-card-main">
+            {% if recipe.cover %}
+                <img src="{{ recipe.cover.url }}">
+            {% else %}
+                <div>🍽️</div>
+            {% endif %}
+            <div>
+                <h3>Ингредиенты</h3>
+                {% for ingredient in ingredients %}
+                    <div>{{ ingredient.product_name }} - {{ ingredient.quantity_product }} {{ ingredient.product_name.get_measure_display }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="detail-card-footer">
+            <h3>Пошаговый рецепт:</h3>
+            <p>{{ recipe.instruction|linebreaksbr }}</p>
+        </div>
+    </article>
+{% endblock %}
